@@ -1,0 +1,108 @@
+{% extends 'base.html'%}
+
+{% block content %}
+<style>
+        .pp {font-family: "Lucida Console", Monaco, monospace;
+           font-size: 15px;
+           letter-spacing: 0px;
+           word-spacing: 0px;
+           color: #000000;
+           font-weight: 400;
+           text-decoration: none solid rgb(68, 68, 68);
+           font-style: normal;
+           font-variant: normal;
+           text-transform: none;}
+    
+        .submit-button {align-items: center;
+                        background-color: #7E4084;
+                        border: 2px solid #111;
+                        border-radius: 8px;
+                        box-sizing: border-box;
+                        color: #ffff;
+                        cursor: pointer;
+                        display: flex;
+                        font-family: Inter, sans-serif;
+                        font-size: 16px;
+                        height: 48px;
+                        justify-content: center;
+                        line-height: 24px;
+                        max-width: 13%;
+                        padding: 0 25px;
+                        position: relative;
+                        text-align: center;
+                        text-decoration: none;
+                        user-select: none;
+                        -webkit-user-select: none;
+                        touch-action: manipulation;}
+    
+        .submit-button:hover {outline: none;}
+    
+        .submit-button:active {background-color: #ffdeda;
+                               outline: none;}
+    
+        .submit-button::after {background-color: #111;
+                               border-radius: 8px;
+                               content: "";
+                               display: block;
+                               height: 48px;
+                               left: 0;
+                               width: 100%;
+                               position: absolute;
+                               top: -2px;
+                               transform: translate(8px, 8px);
+                               transition: transform .2s ease-out;
+                               z-index: -1;}
+    
+        .submit-button:hover::after {transform: translate(0, 0);}
+    
+        @media (min-width: 768px) {.submit-button {padding: 0 40px;}}
+        
+    .flex-container {
+        display: flex;
+        justify-content: space-between;
+    }
+    
+    .flex-item1 {
+        flex-basis: 40%;
+        padding: 20px;
+    }
+    .flex-item2 {
+        flex-basis: 60%;
+        padding: 20px;
+    }
+</style>
+
+<div class="flex-container">
+    <div class="flex-item1">
+        <h1>Language Model App</h1> <br>
+        <form method="POST">
+            {% csrf_token %}
+            <label style="color: #7E4084; font-weight: 500;" for="question">Enter your question:</label> <br>
+            <input type="text" name="question" id="question" required> <br><br>
+            <button class="submit-button" type="submit">Submit</button> <br><br>
+        </form>
+        {% if question %}
+            <h3>Question:</h3>
+            <p class="pp">{{ question }}</p>
+            <h3>Answer:</h3>
+            <p class="pp"> {{ response }}</p>
+        {% endif %}
+    </div>
+    <div class="flex-item2">
+        <input type="file" accept="application/pdf" onchange="loadPDF(event)" />
+        <div id="pdfContainer"></div>
+        <script>
+            function loadPDF(event) {
+            const file = event.target.files[0];
+            const reader = new FileReader();
+
+            reader.onload = function(e) {
+                const pdfContainer = document.getElementById("pdfContainer");
+                pdfContainer.innerHTML = `<embed src="${e.target.result}" type="application/pdf" width="100%" height="600px" />`;
+            };
+            reader.readAsDataURL(file);
+        }
+        </script>
+    </div>
+</div>
+{% endblock %}
