@@ -1,0 +1,1 @@
+The project aims to develop an interactive document query tool that integrates language models within text files. The tool uses GPT3 and Cohere models, and it improves efficiency of gaining information about the documents.
